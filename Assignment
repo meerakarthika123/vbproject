@@ -1,4 +1,4 @@
-Imports System.Collections.Generic
+mports System
 
 Public Class Book
     Public Property Title As String
@@ -67,7 +67,7 @@ Module Program
             Console.WriteLine("3. Display all books")
             Console.WriteLine("4. Exit")
             Console.Write("Enter your choice: ")
-            Integer.TryParse(Console.ReadLine(), choice)
+            choice = Console.ReadLine()
 
             Select Case choice
                 Case 1
@@ -82,8 +82,8 @@ Module Program
                     Console.WriteLine("Book added successfully.")
                 Case 2
                     Console.Write("Enter ISBN of the book to delete: ")
-                    Dim isbnToDelete As String = Console.ReadLine()
-                    library.DeleteBook(isbnToDelete)
+                    Dim a As String = Console.ReadLine()
+                    library.DeleteBook(a)
                 Case 3
                     Console.WriteLine("All books in the library:")
                     library.DisplayAllBooks()
@@ -92,7 +92,7 @@ Module Program
                 Case Else
                     Console.WriteLine("Invalid choice. Please enter again.")
             End Select
-        Loop While choice <> 4
+        Loop While choice >= 4
 
         Console.ReadLine()
     End Sub

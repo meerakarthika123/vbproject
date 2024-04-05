@@ -1,0 +1,99 @@
+Imports System.Collections.Generic
+
+Public Class Book
+    Public Property Title As String
+    Public Property Author As String
+    Public Property ISBN As String
+    Public Property Available As Boolean
+
+    Public Sub New(title As String, author As String, isbn As String)
+        Me.Title = title
+        Me.Author = author
+        Me.ISBN = isbn
+        Me.Available = True
+    End Sub
+
+    Public Overrides Function ToString() As String
+        Return $"{Title} by {Author} (ISBN: {ISBN})"
+    End Function
+End Class
+
+Public Class Library
+    Private books As List(Of Book)
+
+    Public Sub New()
+        books = New List(Of Book)()
+    End Sub
+
+    Public Sub AddBook(book As Book)
+        books.Add(book)
+    End Sub
+
+    Public Sub DeleteBook(isbn As String)
+        Dim bookToDelete As Book = FindBookByISBN(isbn)
+        If bookToDelete IsNot Nothing Then
+            books.Remove(bookToDelete)
+            Console.WriteLine("Book deleted successfully.")
+        Else
+            Console.WriteLine("Book not found.")
+        End If
+    End Sub
+
+    Public Sub DisplayAllBooks()
+        If books.Count > 0 Then
+            For Each book In books
+                Console.WriteLine(book.ToString())
+            Next
+        Else
+            Console.WriteLine("No books available in the library.")
+        End If
+    End Sub
+
+    Private Function FindBookByISBN(isbn As String) As Book
+        Return books.FirstOrDefault(Function(b) b.ISBN = isbn)
+    End Function
+End Class
+
+Module Program
+    Sub Main(args As String())
+        Dim library As New Library()
+
+        ' Menu
+        Dim choice As Integer
+        Do
+            Console.WriteLine("Menu:")
+            Console.WriteLine("1. Add a book")
+            Console.WriteLine("2. Delete a book")
+            Console.WriteLine("3. Display all books")
+            Console.WriteLine("4. Exit")
+            Console.Write("Enter your choice: ")
+            Integer.TryParse(Console.ReadLine(), choice)
+
+            Select Case choice
+                Case 1
+                    Console.Write("Enter title: ")
+                    Dim title As String = Console.ReadLine()
+                    Console.Write("Enter author: ")
+                    Dim author As String = Console.ReadLine()
+                    Console.Write("Enter ISBN: ")
+                    Dim isbn As String = Console.ReadLine()
+                    Dim newBook As New Book(title, author, isbn)
+                    library.AddBook(newBook)
+                    Console.WriteLine("Book added successfully.")
+                Case 2
+                    Console.Write("Enter ISBN of the book to delete: ")
+                    Dim isbnToDelete As String = Console.ReadLine()
+                    library.DeleteBook(isbnToDelete)
+                Case 3
+                    Console.WriteLine("All books in the library:")
+                    library.DisplayAllBooks()
+                Case 4
+                    Console.WriteLine("Exiting the program.")
+                Case Else
+                    Console.WriteLine("Invalid choice. Please enter again.")
+            End Select
+        Loop While choice <> 4
+
+        Console.ReadLine()
+    End Sub
+End Module
